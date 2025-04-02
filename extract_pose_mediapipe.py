@@ -17,6 +17,8 @@ mp_holistic = mp.solutions.holistic
 # OUT_PATH = "/home/negar/secondssd/pooya/mediapipe_res_phoenix/"
 DATA_PATH = "/home/ksw38/MachineTranslation/data/PHOENIX-2014-T-release-v3/PHOENIX-2014-T/features/fullFrame-210x260px/" # Change to Chicago FS Wild
 OUT_PATH = "/home/ksw38/MachineTranslation/mediapipe_res_phoenix/"
+DATA_PATH = "/home/ksw38/MachineTranslation/data/ChicagoFSWild/ChicagoFSWild_Frames/"
+OUT_PATH = "/home/ksw38/MachineTranslation/mediapipe_res_chicago/"
 ### End Modification ###
 
 BG_COLOR = (192, 192, 192) # gray
@@ -70,8 +72,8 @@ with mp_holistic.Holistic(
   
   for p1dir in os.listdir(DATA_PATH):
     for p2dir in os.listdir(DATA_PATH+ p1dir):
-
-        IMAGE_FILES = sorted(glob.glob(DATA_PATH+ p1dir + "/" + p2dir +"/*.png"))
+        # print(DATA_PATH+ p1dir + "/" + p2dir +"/*.png")
+        IMAGE_FILES = sorted(glob.glob(DATA_PATH+ p1dir + "/" + p2dir +"/*.jpg"))
                 
         for idx, file in enumerate(IMAGE_FILES):
             print(file)
