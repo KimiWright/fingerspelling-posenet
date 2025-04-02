@@ -25,9 +25,17 @@ import kornia.losses
 from torchvision import transforms
 from gaussian_noise import GaussianNoise
 
+### Modificiation ####
 data_dir = "/home/negar/Desktop/Pooya/TF-DeepHand/mediapipe_res_chicago/"
-hand_detected_label = "/home/negar/Desktop/Pooya/Self_Supervised_ASL_Finger_Spelling/sign_hand_detection.csv"
-labels_csv = "/home/negar/Documents/Datasets/ChicagoFSWild/ChicagoFSWild.csv"
+# hand_detected_label = "/home/negar/Desktop/Pooya/Self_Supervised_ASL_Finger_Spelling/sign_hand_detection.csv"
+# labels_csv = "/home/negar/Documents/Datasets/ChicagoFSWild/ChicagoFSWild.csv"
+
+hand_detected_label = "/home/ksw38/MachineTranslation/fingerspelling-posenet/sign_hand_detection_wild++.csv" # Also try first if this doesn't work
+labels_csv = "/home/ksw38/MachineTranslation/data/ChicagoFSWild/ChicagoFSWild.csv"
+
+model_pth = "/home/ksw38/MachineTranslation/fingerspelling-posenet/best_model_66.3.pt"
+### End Modification
+
 
 batch_size = 1
 num_workers = 0
@@ -46,7 +54,9 @@ beam_size  = 5
 lm_beta = 0.4
 ins_gamma = 1.2
 chars = "$' &.@acbedgfihkjmlonqpsrutwvyxz"
-lm_path = "/home/negar/Desktop/Pooya/TF-DeepHand/asl-iter-attn/out/best.pth"
+### Modification ###
+# lm_path = "/home/negar/Desktop/Pooya/TF-DeepHand/asl-iter-attn/out/best.pth"
+### End Modifciation ###
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # device = torch.device("cpu")
@@ -68,7 +78,10 @@ testdataloader = DataLoader(dataset_test, batch_size=1, shuffle=False)
 
 
 model = TransformerModel(output_dim=len(char_list), d_input = 42 ,d_model=256, nhead=8, num_layers=3, dropout=0.1).to(device)
-model.load_state_dict(torch.load('/home/negar/Desktop/Pooya/TF-DeepHand/Transformer/best_model_66.3.pt'))
+### Modification ###
+# model.load_state_dict(torch.load('/home/negar/Desktop/Pooya/TF-DeepHand/Transformer/best_model_66.3.pt'))
+model.load_state_dict(torch.load(model_pth))
+### End Modification
 
 
 vocab_map_enc, inv_vocab_map_enc, char_list_enc = get_ctc_vocab(chars[1:])

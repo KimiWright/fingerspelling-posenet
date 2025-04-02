@@ -12,8 +12,12 @@ mp_holistic = mp.solutions.holistic
 
 # For static images:
 
-DATA_PATH = "/home/negar/secondssd/pooya/PHOENIX-2014-T-release-v3/PHOENIX-2014-T/features/fullFrame-210x260px/"
-OUT_PATH = "/home/negar/secondssd/pooya/mediapipe_res_phoenix/"
+### Modification ###
+# DATA_PATH = "/home/negar/secondssd/pooya/PHOENIX-2014-T-release-v3/PHOENIX-2014-T/features/fullFrame-210x260px/"
+# OUT_PATH = "/home/negar/secondssd/pooya/mediapipe_res_phoenix/"
+DATA_PATH = "/home/ksw38/MachineTranslation/data/PHOENIX-2014-T-release-v3/PHOENIX-2014-T/features/fullFrame-210x260px/" # Change to Chicago FS Wild
+OUT_PATH = "/home/ksw38/MachineTranslation/mediapipe_res_phoenix/"
+### End Modification ###
 
 BG_COLOR = (192, 192, 192) # gray
 
