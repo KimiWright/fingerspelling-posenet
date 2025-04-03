@@ -29,7 +29,7 @@ from gaussian_noise import GaussianNoise
 data_dir = "/home/negar/Desktop/Pooya/TF-DeepHand/mediapipe_res_chicago/"
 # hand_detected_label = "/home/negar/Desktop/Pooya/Self_Supervised_ASL_Finger_Spelling/sign_hand_detection.csv"
 # labels_csv = "/home/negar/Documents/Datasets/ChicagoFSWild/ChicagoFSWild.csv"
-
+data_dir = "/home/ksw38/MachineTranslation/mediapipe_res_chicago"
 hand_detected_label = "/home/ksw38/MachineTranslation/fingerspelling-posenet/sign_hand_detection_wild++.csv" # Also try first if this doesn't work
 labels_csv = "/home/ksw38/MachineTranslation/data/ChicagoFSWild/ChicagoFSWild.csv"
 
