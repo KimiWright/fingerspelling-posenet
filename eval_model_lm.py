@@ -15,21 +15,21 @@ import copy
 from torch.utils.data import Dataset, DataLoader
 from sklearn import preprocessing
 import numpy as np
-from torchinfo import summary
+# from torchinfo import summary ### Modification
 from text_ctc_utils import * 
 from utils import *
 from ctc_decoder import Decoder
-from lm_scorer import Scorer
+# from lm_scorer import Scorer ### Modification
 from torchvision.ops.focal_loss import sigmoid_focal_loss
-import kornia.losses
+# import kornia.losses ### Modification
 from torchvision import transforms
 from gaussian_noise import GaussianNoise
 
 ### Modificiation ####
-data_dir = "/home/negar/Desktop/Pooya/TF-DeepHand/mediapipe_res_chicago/"
+# data_dir = "/home/negar/Desktop/Pooya/TF-DeepHand/mediapipe_res_chicago/"
 # hand_detected_label = "/home/negar/Desktop/Pooya/Self_Supervised_ASL_Finger_Spelling/sign_hand_detection.csv"
 # labels_csv = "/home/negar/Documents/Datasets/ChicagoFSWild/ChicagoFSWild.csv"
-data_dir = "/home/ksw38/MachineTranslation/mediapipe_res_chicago"
+data_dir = "/home/ksw38/MachineTranslation/mediapipe_res_chicago/"
 hand_detected_label = "/home/ksw38/MachineTranslation/fingerspelling-posenet/sign_hand_detection_wild++.csv" # Also try first if this doesn't work
 labels_csv = "/home/ksw38/MachineTranslation/data/ChicagoFSWild/ChicagoFSWild.csv"
 
