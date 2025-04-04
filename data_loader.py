@@ -8,6 +8,7 @@ import math
 import random
 from random import randrange
 import cv2
+import os ### Test Code
 
 lipsUpperOuter = [61, 185, 40, 39, 37, 0, 267, 269, 270, 409, 291]
 lipsLowerOuter = [146, 91, 181, 84, 17, 314, 405, 321, 375, 291]
@@ -230,6 +231,7 @@ class HandPoseDataset(Dataset):
         body_joints = []
 
         df = self.sign_hand_csv[self.sign_hand_csv['B'].str.contains(file.split('/')[-2],regex=False)]
+
         aug = False
         if self.augmentations and random.random() < self.augmentations_prob:
             aug = True
@@ -360,6 +362,12 @@ class HandPoseDataset(Dataset):
     def __getitem__(self, idx):
         
         file_path = os.path.join(self.data_dir, self.files[idx])
+        ### Test Code ###
+        if not os.path.exists(file_path):
+            print(f"Error: File {file_path} does not exist!")
+        elif os.stat(file_path).st_size == 0:
+            print(f"Error: File {file_path} is empty!")
+        ### End Test Code ###
         hand_pose = self.readHandPose(file_path)
         hand_pose = torch.from_numpy(hand_pose).float()
         if self.transform:

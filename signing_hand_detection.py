@@ -6,13 +6,20 @@ import os
 import glob
 import csv
 
-POSE_PATH_DIR = "/home/negar/Documents/Datasets/ChicagoWild++/mediapipe_res_chicago"
+### Modification ###
+# POSE_PATH_DIR = "/home/negar/Documents/Datasets/ChicagoWild++/mediapipe_res_chicago"
+POSE_PATH_DIR = "/home/ksw38/MachineTranslation/mediapipe_res_chicago/"
+### End Modification ###
 treshold = 0.4
 
 u = 0
 failed = open("failedhands.txt", "a")
 
-with open('./sign_hand_detection_wild++.csv', 'w') as f:
+### Modification ###
+# write_path = './sign_hand_detection_wild++.csv'
+write_path = './sign_hand_detection_wild.csv'
+with open(write_path, 'w') as f:
+### End Modification ###
     writer = csv.writer(f)
     
     for path, subdirs, files in os.walk(POSE_PATH_DIR):
@@ -20,18 +27,28 @@ with open('./sign_hand_detection_wild++.csv', 'w') as f:
             for path2, subdirs2, files2 in os.walk(POSE_PATH_DIR+"/"+file):
                 for file2 in subdirs2:
                     print(path2,file2)
+                    # ### Modification ###
                     # if file in ['misc_2', 'deafvideo_3', 'deafvideo_2', 'misc_1', 'youtube_1', 'deafvideo_1', 'gallaudet', 'deafvideo_6', 'youtube_2', 'awti', 'aslthat', 'youtube_6', 'deafvideo_5', 'aslized', 'youtube_3', 'deafvideo_4', 'youtube_4', 'youtube_5']:
                     #         continue
+                    if file2 == 'visualize':
+                        print('visualize')
+                        continue
+                    # ### End Modification ###
                     left_joints = []
                     right_joints = []
                     if len(sorted(glob.glob(path2+"/"+file2+"/*"))) ==1:
                         data = [path2,file2,"r"]
                         writer.writerow(data)
                         continue
-
+                    
                     for frame in sorted(glob.glob(path2+"/"+file2+"/*")):
-                        
-                        frame_np = np.load(frame,allow_pickle=True)
+                        print(frame)
+                        ### Modification ###
+                        try:
+                            frame_np = np.load(frame,allow_pickle=True) #original
+                        except IsADirectoryError:
+                            continue
+                        ### End Modification ###
                         
                         if frame_np is None or len(frame_np) ==0:
                             continue
