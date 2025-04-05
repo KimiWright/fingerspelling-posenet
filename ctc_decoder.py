@@ -208,7 +208,12 @@ class Decoder(object):
         seqlen = len(prob)
         beam_idx = np.argsort(prob[0, :])[-beam_size:].tolist()
 
-        beam_prob = list(map(lambda x: math.log(prob[0, x]), beam_idx))
+        ### Modification ###
+        # beam_prob = list(map(lambda x: math.log(prob[0, x]), beam_idx))
+        epsilon = 1e-8
+        # print(lambda x: math.log(prob[0, x]))
+        beam_prob = list(map(lambda x: math.log(max(prob[0, x], epsilon)), beam_idx))
+        ### End Modification ###
         beam_idx = list(map(lambda x: [x], beam_idx))
         for t in range(1, seqlen):
             topk_idx = np.argsort(prob[t, :])[-beam_size:].tolist()
@@ -221,7 +226,11 @@ class Decoder(object):
             for b in range(beam_size*beam_size):
                 i, j = int(b/beam_size), int(b % beam_size)
                 aug_beam_idx[b].append(topk_idx[j])
-                aug_beam_prob[b] = aug_beam_prob[b]+math.log(topk_prob[j])
+                ### Modification ###
+                # aug_beam_prob[b] = aug_beam_prob[b]+math.log(topk_prob[j])
+                aug_beam_prob[b] = aug_beam_prob[b]+math.log(max(topk_prob[j], epsilon))
+                ### End Modification ###
+                # aug_beam_prob[b] = aug_beam_prob[b]+math.log(topk_prob[j])
             # merge
             merge_beam_idx, merge_beam_prob = [], []
             for b in range(beam_size*beam_size):
