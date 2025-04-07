@@ -6,6 +6,7 @@ from text_ctc_utils import *
 from torch.utils.data import DataLoader, TensorDataset
 from data_loader import HandPoseDataset
 from ctc_decoder import Decoder
+from utils import *
 
 data_dir = "/home/ksw38/MachineTranslation/mediapipe_res_chicago/"
 hand_detected_label = "/home/ksw38/MachineTranslation/fingerspelling-posenet/sign_hand_detection_wild.csv"
@@ -49,17 +50,27 @@ dataset_test = HandPoseDataset(data_dir, labels_csv , hand_detected_label, targe
 testdataloader = DataLoader(dataset_test, batch_size=1, shuffle=False)
 decoder_dec = Decoder(char_list, blank_index=0)
 
+preds = []
+gt_labels = []
+preds_encoder = []
 for i, (poses, labels) in enumerate(testdataloader):
     X_batch = poses.to(device)
 
     # MC Dropout Inference
     all_logits = mc_dropout_inference(model, X_batch, T=20)
     mean_logits = all_logits.mean(dim=0)  # [T, B, C]
-    std_logits = all_logits.std(dim=0)  # [T, B, C]
 
     # Continue as usual
     log_probs_enc = F.log_softmax(mean_logits, dim=-1)
     log_probs_enc = log_probs_enc.permute(1, 0, 2)  # [B, T, C] → [T, B, C] if needed
+
+    current_preds_enc = ""
+    preds_encoder.append(current_preds_enc)
+
+    cls_token, _ = model(poses)
+
+    pred_size = (torch.atan2(torch.tensor([cls_token[0,0].detach().cpu()]),torch.tensor([cls_token[0,1].detach().cpu()]))/(2 * torch.pi) +0.5) * 30
+    pred_size = torch.round(pred_size)
 
     # Decode, compute loss, etc.
     current_preds = decoder_dec.beam_decode_trans(
@@ -70,8 +81,15 @@ for i, (poses, labels) in enumerate(testdataloader):
         beta=lm_beta, 
         gamma=ins_gamma
     )
+    current_preds = ''.join(current_preds)
     
-    print(f"Bayesian Prediction: {''.join(current_preds)}")
-    print(f"Standard Deviation of Logits: {std_logits.mean().item()}")
+    preds.append(current_preds)
+    print("DecLM : ", current_preds, " EN : " , current_preds_enc, " GT : "  , ''.join(invert_to_chars(labels[:,1:-1],inv_vocab_map)), "   ", pred_size) 
+    gt_labels.append(''.join(invert_to_chars(labels[:,1:-1],inv_vocab_map)))
 
+lev_acc = compute_acc(preds_encoder, gt_labels)
+lev_acc_beam = compute_acc(preds, gt_labels)
+
+
+print('Letter Acc: {:.4f} - Best Acc {:.4f}'.format(lev_acc, lev_acc_beam))
 
