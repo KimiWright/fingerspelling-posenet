@@ -59,6 +59,6 @@ def plot_results(df):
         plt.legend(title='Gamma')
     plt.show()
 
-# plot_results(df)
-# plot_results(avg_df)
-# plot_results(vote_df)
+# plot_results(df) # Best beta ~ 2, 2.2 gamma ~ 0.6, T ~ 100, 2
+# plot_results(avg_df) # Best beta ~ 2, gamma ~ 0.6, 0.8 T ~ 100, 2
+# plot_results(vote_df) # Best beta ~ 2, gamma ~ 0.6 T ~ 2 insufficient data
