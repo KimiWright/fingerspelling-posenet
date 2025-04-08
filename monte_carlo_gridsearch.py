@@ -50,7 +50,7 @@ testdataloader = DataLoader(dataset_test, batch_size=1, shuffle=False)
 decoder_dec = Decoder(char_list, blank_index=0)
 
 beta_values = [1.8, 2.0, 2.2, 3.0, 4.0]
-gamma_values = [0.6]
+gamma_values = [0.6, 0.8]
 T_values = [2, 100]
 params = [(beta, gamma, T) for beta in beta_values for gamma in gamma_values for T in T_values]
 
@@ -108,7 +108,7 @@ for lm_beta, ins_gamma, T in params:
 
 
     print('Letter Acc: {:.4f} - Best Acc {:.4f}'.format(lev_acc, lev_acc_beam))
-    with open('results2.csv', mode='a', newline='') as file:
+    with open('results3.csv', mode='a', newline='') as file:
         writer = csv.writer(file)
         writer.writerow([lm_beta, ins_gamma, T, lev_acc, lev_acc_beam])
     
