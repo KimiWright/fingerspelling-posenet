@@ -62,3 +62,41 @@ def plot_results(df):
 # plot_results(df) # Best beta ~ 2, 2.2 gamma ~ 0.6, T ~ 100, 2
 # plot_results(avg_df) # Best beta ~ 2, gamma ~ 0.6, 0.8 T ~ 100, 2
 # plot_results(vote_df) # Best beta ~ 2, gamma ~ 0.6 T ~ 2 insufficient data
+
+def get_matching_T(df):
+    # Get the set of unique t values
+    t_values = df['T'].unique()
+
+    # For each t, get the set of (a, b, c) tuples
+    abc_sets = [set(tuple(row) for row in df[df['T'] == t][['beta', 'gamma']].values) for t in t_values]
+
+    # Find intersection of all sets
+    common_abc = set.intersection(*abc_sets)
+
+    # print("Common (beta, gamma) pairs for all T values:")
+    # for pair in common_abc:
+    #     print(pair)
+
+    return common_abc
+
+beta_gamma = get_matching_T(avg_df)
+for pair in beta_gamma:
+    # Get the highest accuracy for each pair
+    df_pair = avg_df[(avg_df['beta'] == pair[0]) & (avg_df['gamma'] == pair[1])]
+    max_acc = df_pair['acc'].max()
+    print(f"Max accuracy for beta = {pair[0]}, gamma = {pair[1]}: {max_acc}")
+
+beta_best = 2.0
+gamma_best = 0.6
+df_best = avg_df[(avg_df['beta'] == beta_best) & (avg_df['gamma'] == gamma_best)]
+df_best = df_best.sort_values('T')
+T_vals = df_best['T']
+acc_vals = df_best['acc']
+plt.figure()
+plt.plot(T_vals, acc_vals, marker='o')
+plt.xlabel('T')
+plt.ylabel('Accuracy')
+plt.title(f'Accuracy vs T for beta = {beta_best}, gamma = {gamma_best}')
+plt.xticks(T_vals)
+plt.grid(True)
+plt.show()
