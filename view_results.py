@@ -7,7 +7,7 @@ def csv_to_df(csv_file):
     df = pd.read_csv(csv_file)
 
 # Pull in all of the results csv files
-csv_files = ["avg_results.csv", "results.csv", "avg_results2.csv", "vote_results.csv", "vote_results2.csv"]
+csv_files = ["results.csv", "results2.csv", "avg_results.csv", "avg_results2.csv", "avg_results3.csv", "vote_results.csv", "vote_results2.csv"]
 column_titles = ['beta', 'gamma', 'T', 'best_acc', 'acc']
 avg_dfs = []
 vote_dfs = []
@@ -29,6 +29,10 @@ for csv_file in csv_files:
 avg_df = pd.concat(avg_dfs, ignore_index=True)
 vote_df = pd.concat(vote_dfs, ignore_index=True)
 df = pd.concat(dfs, ignore_index=True)
+
+print("Max accuracy for df: ", df['acc'].max())
+print("Max accuracy for avg_df: ", avg_df['acc'].max())
+print("Max accuracy for vote_df: ", vote_df['acc'].max())
 
 def plot_results(df):
     # Get all the unique values of beta, gamma, and T
