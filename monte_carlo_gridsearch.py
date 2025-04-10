@@ -49,9 +49,9 @@ dataset_test = HandPoseDataset(data_dir, labels_csv , hand_detected_label, targe
 testdataloader = DataLoader(dataset_test, batch_size=1, shuffle=False)
 decoder_dec = Decoder(char_list, blank_index=0)
 
-beta_values = [1.9, 2.0, 2.1, 2.2, 2.3]
-gamma_values = [0.6, 0.8]
-T_values = [1, 2, 100, 200, 300]
+beta_values = [1.6, 1,7, 1.8, 1.9]
+gamma_values = [0.6]
+T_values = [200]
 params = [(beta, gamma, T) for beta in beta_values for gamma in gamma_values for T in T_values]
 
 best_lev_acc = float('-inf')
