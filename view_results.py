@@ -61,7 +61,7 @@ def plot_results(df):
 
 # plot_results(df) # Best beta ~ 2, 2.2 gamma ~ 0.6, 0.8 T ~ 100, 2 # T = 200, gamma = 0.6, beta before 1.9
 # plot_results(avg_df) # Best beta ~ 2, gamma ~ 0.6, 0.8 T ~ 100, 2
-plot_results(vote_df) # Best beta ~ 2, gamma ~ 0.6 T ~ 2 insufficient data
+# plot_results(vote_df) # Best beta ~ 2, gamma ~ 0.6 T ~ 2 insufficient data
 
 def get_matching_T(df):
     # Get the set of unique t values
