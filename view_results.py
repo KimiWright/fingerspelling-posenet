@@ -30,9 +30,12 @@ avg_df = pd.concat(avg_dfs, ignore_index=True)
 vote_df = pd.concat(vote_dfs, ignore_index=True)
 df = pd.concat(dfs, ignore_index=True)
 
-print("Max accuracy for df: ", df['acc'].max())
-print("Max accuracy for avg_df: ", avg_df['acc'].max())
-print("Max accuracy for vote_df: ", vote_df['acc'].max())
+df_max = df['acc'].max()
+print("Max accuracy for df: ", df['acc'].max(), " at beta: ", df[df['acc'] == df_max]['beta'].values[0], " gamma: ", df[df['acc'] == df_max]['gamma'].values[0], " T: ", df[df['acc'] == df_max]['T'].values[0])
+avg_df_max = avg_df['acc'].max()
+print("Max accuracy for avg_df: ", avg_df['acc'].max(), " at beta: ", avg_df[avg_df['acc'] == avg_df_max]['beta'].values[0], " gamma: ", avg_df[avg_df['acc'] == avg_df_max]['gamma'].values[0], " T: ", avg_df[avg_df['acc'] == avg_df_max]['T'].values[0])
+vote_df_max = vote_df['acc'].max()
+print("Max accuracy for vote_df: ", vote_df['acc'].max(), " at beta: ", vote_df[vote_df['acc'] == vote_df_max]['beta'].values[0], " gamma: ", vote_df[vote_df['acc'] == vote_df_max]['gamma'].values[0], " T: ", vote_df[vote_df['acc'] == vote_df_max]['T'].values[0])
 
 def plot_results(df):
     # Get all the unique values of beta, gamma, and T
@@ -96,3 +99,32 @@ def get_matching_T(df):
 # plt.xticks(T_vals)
 # plt.grid(True)
 # plt.show()
+
+def plot_results_T_as_x(df):
+    # Get all the unique values of beta, gamma, and T
+    betas = df['beta'].unique()
+    gammas = df['gamma'].unique()
+    Ts = df['T'].unique()
+
+    # Convert negative accuracies to 0
+    df['acc'] = df['acc'].apply(lambda x: max(x, 0))
+
+    # Make hyperparameter plots
+    for beta_val in betas:
+        plt.figure()
+        df_beta0 = df[df['beta'] == beta_val]
+        for gamma in gammas:
+            df_gamma = df_beta0[df_beta0['gamma'] == gamma]
+            # print("df_gamma: ", df_gamma)
+            if df_gamma.empty:
+                continue
+            plt.plot(df_gamma['T'], df_gamma['acc'], label=gamma)
+        plt.xlabel('T')
+        plt.ylabel('Accuracy')
+        plt.title('Accuracy vs T for beta = ' + str(beta_val))
+        plt.legend(title='Gamma')
+    plt.show()
+
+# plot_results_T_as_x(df) # Best beta ~ 2, gamma ~ 0.6, 0.8 T ~ 100, 2 # T = 200, gamma = 0.6, beta before 1.9
+# plot_results_T_as_x(avg_df) # Best beta ~ 2, gamma ~ 0.6, 0.8 T ~ 100, 2
+plot_results_T_as_x(vote_df) # Best beta ~ 2, gamma ~ 0.6 T ~ 2 insufficient data
